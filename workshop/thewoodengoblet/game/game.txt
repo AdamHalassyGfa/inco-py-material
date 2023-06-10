@@ -1,0 +1,50 @@
+## GAME:
+>> Title: "The lamp of the Spirits"
+>> Prologue:
+The village got an old clay oil lamp from the Good Spirits eons ago, to protect the village. One morning
+    the lamp was stolen. You, my dear, have to seek out who stole the lamp, and you must bring back the
+    lamp. Hurry, hurry, we have only three weeks till the next new moon, when the Dark Spirits come! We
+    must be protected!
+##
+
+## ACTION:
+>> Id: "prologue"
+>> Name: "Prologue"
+>> Desc:
+ You are on the plaza of the village. You look around. In front of you there is the Altair of Protection.
+    Behind you the gates of the village. The Night Watcher's house is also nearby.
+>> Choice: "Inspect the Altair of Protection"
+>> Goto: "altair"
+>> Choice: "Go to the Wild"
+>> Goto: ""
+>> Choice: "Ask the Night Watcher"
+>> Goto: "nightwatcher"
+##
+
+## Action:
+>> Id: "altair"
+>> Name: "The Altair of Protection"
+>> Desc:
+    The altair looks intact. However when you look closer, you find a little golden feather.
+>> Choice: "Take the feather"
+>> Hook: "take-the-feather"
+>> Goto: "prologue"
+>> Choice: "Leave the feather there"
+>> Goto: "prologue"
+##
+
+## Action:
+>> Id: "nightwatcher"
+>> Name: "Ask the Night Watcher"
+>> Desc:
+The Night Watcher says nothing had happened during the night. He looks a little bit dizzy and nervous,
+    however.
+>> Choice: "You say 'Hey, everything is all right? You look confused.'"
+>> Goto: "prologue"
+>> Response:
+Well, at midnight I saw a sudden bright flash around the altair. I went there but then I saw the light
+    again from the gates. When I arrived there, I saw a golden robin. The next thing I remember is I
+    woke up in the Lookout Tower. I thought I just fell asleep and I just had a dream.
+>> Choice: "Say goodbye."
+>> Goto: "prologue"
+##
