@@ -7,6 +7,57 @@ import threading
 
 from socket import *
 
+
+class ChatAgent:
+    def __init__(self, parent, conn):
+        self.alive = True
+        self.parent = parent
+        self.conn = conn
+        self.name = f"AG-{random.randint(1000, 9999)}"
+
+    def listen(self):
+        self.parent.sendall(self, f"[{self.name}] joined to the chat.")
+        while self.alive:
+            try:
+                msg = self.conn.recv(1024)
+                if not msg:
+                    break
+
+                msg = msg.decode()
+                if msg:
+                    self.handle(msg)
+                else:
+                    time.sleep(1)
+            except error as msg:
+                if self.alive:
+                    print(f"Something went wrong: {msg}")
+                break
+
+        self.parent.sendall(self, f"{self.name} left the chat.")
+        self.parent.remove(self)
+        print("Agent closed.")
+
+    def handle(self, msg):
+        parts = msg.split(':')
+        cmd = parts[0]
+        body = parts[1]
+        if cmd == 'name':
+            oldName = self.name
+            self.name = body
+            print(f"[{oldName}] now ['{body}']")
+            self.parent.sendall(self, f"'{oldName}' renamed to '{body}'.")
+        elif cmd == 'msg':
+            print(f"[{self}] said: '{body}'")
+            self.parent.sendall(self, body)
+
+    def send(self, sender, msg):
+        if sender != self:
+            self.conn.sendall(bytes(msg, 'utf-8'))
+
+    def close(self):
+        self.alive = False
+
+
 class ChatServer:
 
     def __init__(self, server_address):
@@ -14,23 +65,7 @@ class ChatServer:
         self.server_address = server_address
         self.discovery_thread = threading.Thread(target=self.push_discovery)
         self.color_thread = threading.Thread(target=self.listen_color)
-        self.color_agents = list()
-
-    def color_agent(self, conn):
-        name = random.randint(1, 1000)
-        while self.alive:
-            try:
-                msg = conn.recv(1024)
-                msg = msg.decode()
-                if msg:
-                    print(f"Msg: [{msg}]")
-                else:
-                    time.sleep(1)
-            except error as msg:
-                print(f"Something went wrong: {msg}")
-                break
-
-        print("Agent closed.")
+        self.agents = list()
 
     def listen_color(self):
         color_socket = socket()
@@ -42,7 +77,9 @@ class ChatServer:
         while self.alive:
             try:
                 conn, addr = color_socket.accept()
-                thread = threading.Thread(target=self.color_agent, args=(conn,))
+                agent = ChatAgent(self, conn)
+                self.agents.append(agent)
+                thread = threading.Thread(target=agent.listen)
                 print(f"Client from {addr} accepted, starting agent.")
                 thread.start()
             except timeout:
@@ -72,4 +109,16 @@ class ChatServer:
 
     def close(self):
         self.alive = False
+        agents = self.agents.copy()
+        for agent in agents:
+            agent.stop()
         print("I'll close everything...")
+
+    def sendall(self, sender, msg):
+        agents = self.agents.copy()
+        msg = f"{sender.name}> {msg}"
+        for agent in agents:
+            agent.send(sender, msg)
+
+    def remove(self, agent):
+        self.agents.remove(agent)
