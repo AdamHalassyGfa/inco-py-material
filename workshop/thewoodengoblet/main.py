@@ -1,6 +1,7 @@
 from lib import game
+from lib import story
 
-story = game.load_story('game/game.yaml')
+story = story.load_story('game/game.yaml')
 game = game.Game(story)
 
-print(game)
+game.play()
