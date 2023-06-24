@@ -1,0 +1,49 @@
+game:  
+    title: The lamp of the Spirits
+    prologue: The village got an old clay oil lamp from the Good Spirits eons ago, to protect the village. One morning
+      the lamp was stolen. You, my dear, have to seek out who stole the lamp, and you must bring back the
+      lamp. Hurry, hurry, we have only three weeks till the next new moon, when the Dark Spirits come! We
+      must be protected!
+    start: "prologue"
+
+    actions:
+      #
+      #   PROLOGUE
+      # ----------------------------------------------------------------------------------------------------------------
+      - action:
+          id: "prologue"
+          name: "Prologue"
+          desc: You are on the plaza of the village. You look around. In front of you there is the Altair of Protection.
+            Behind you the gates of the village. The Night Watcher's house is also nearby.
+          choices:
+            - choice: "Inspect the Altair of Protection"
+              next: "altair"
+            - choice: "Go to the Wild"
+              next: ""
+            - choice: "Ask the Night Watcher"
+              next: "nightwatcher"
+
+      - action:
+          id: "altair"
+          name: "The Altair of Protection"
+          desc: The altair looks intact. However when you look closer, you find a little golden feather.
+          choices:
+            - choice: "Take the feather"
+              hook: "take-the-feather"
+              next: "prologue"
+            - choice: "Leave the feather there"
+              next: "prologue"
+
+      - action:
+        id: "nightwatcher"
+        name: "Ask the Night Watcher"
+        desc: The Night Watcher says nothing had happened during the night. He looks a little bit dizzy and nervous,
+          however.
+        choices:
+          - choice: "You say 'Hey, everything is all right? You look confused.'"
+            next: "prologue"
+            response: Well, at midnight I saw a sudden bright flash around the altair. I went there but then I saw the 
+              light again from the gates. When I arrived there, I saw a golden robin. The next thing I remember is I
+              woke up in the Lookout Tower. I thought I just fell asleep and I just had a dream.
+          - choice: "Say goodbye."
+            next: "prologue"

@@ -1,4 +1,6 @@
-from lib import game, action, loader
+from lib import game
 
-loader = loader.GameLoader("game/game.txt")
-loader.load()
+story = game.load_story('game/game.yaml')
+game = game.Game(story)
+
+print(game)
