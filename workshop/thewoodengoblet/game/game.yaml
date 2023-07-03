@@ -17,7 +17,11 @@ game:
           - choice: "Inspect the Altair of Protection"
             next: "altair"
           - choice: "Go to the Wild"
-            next: ""
+            respose: I can't let you go like that. Take this sword and this shield with you. I know you know how and
+              when you use a weapon and when to use words. Remember, it is better to convince your opponents than kill
+              them.
+            items: ["Sword", "Shield"]
+            next: "the_beggar"
           - choice: "Ask the Night Watcher"
             next: "nightwatcher"
 
@@ -26,7 +30,7 @@ game:
         desc: The altair looks intact. However when you look closer, you find a little golden feather.
         choices:
           - choice: "Take the feather"
-            hook: "take-the-feather"
+            items: ["Feather"]
             next: "plaza"
           - choice: "Leave the feather there"
             next: "plaza"
@@ -43,3 +47,55 @@ game:
               woke up in the Lookout Tower. I thought I just fell asleep and I just had a dream.
           - choice: "Say goodbye."
             next: "plaza"
+
+      #
+      #   The Wild:
+      # ----------------------------------------------------------------------------------------------------------------
+      - action: "the_beggar"
+        name: "You encounter a beggar"
+        desc: On the road to the nearby city, you meet with poor fella who begs for some food. He says he have not eaten
+          for a week.
+        choices:
+          - choice: Ignore him
+            next: "the_trader"
+          - choice: Toss a coin to the beggar
+            response: Dear wanderer! I can't give you anything but what I know. Listen carefully lad! What makes light 
+              in the dark is there to guide you, not to fight you! Listen to me, and you'll remain the true man you  
+              are.
+            hooks: ["increase_reputation"]
+            next: "the_trader"
+          - choice: Kick him
+            hooks: ["decrease_reputation"]
+            next: "the_trader"
+
+      #
+      #   The trader and the wolves:
+      # ----------------------------------------------------------------------------------------------------------------
+      - action: "the_trader"
+        name: "Oh, look! A trader was attacked by wolves!"
+        desc: You see a Trader fighting against wolves. The Trader tries to scare the wolves away bit a torch, but
+          the wolves are too hungry. You run there and fight off the wolves. The Trader thanks you saving his life.
+        choices:
+          - choice: Escort him to the town
+            hooks: ["increase_reputation", "escort_trader"]
+            next: "at_the_trader"
+          - choice: Warn him to hurry to safety as fast as he could
+            response: I will, I will! I'll tell people how kind you was. But you better to be very careful. This
+              forest... enchanted. Unimaginable magic is there! Only fierce bandits love there. Some people say an evil
+              Sorceress lives there and she will enchants you, and you have to live there as a tree for centuries! You
+              can see if she is nearby. If you see a light like a distant candle, run, run as fast as far as you can!
+            next: "woods"
+          - choice: Ask for some reward
+            response: Yes, yes, of course. Here is your reward, brave warrior. Be safe through your journey!
+            hooks: ["decrease_reputation"]
+            next: "woods"
+
+      #
+      #   The city:
+      # ----------------------------------------------------------------------------------------------------------------
+      - action: "at_the_trader"
+        name: "The trader and you arrived to the Trader's mansion."
+        desc: The Trader asks you to spend the dinner and the night with him and his family.  
+      - action: "the_inn"
+        name: "Welcome in the 'Inn to the Tired Wanderer'!"
+        desc: You see a Trader fighting against wolves. The Trader tries to scare the wolves away bit a torch, but
