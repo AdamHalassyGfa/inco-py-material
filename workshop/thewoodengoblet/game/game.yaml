@@ -77,7 +77,7 @@ game:
           the wolves are too hungry. You run there and fight off the wolves. The Trader thanks you saving his life.
         choices:
           - choice: Escort him to the town
-            hooks: ["increase_reputation", "escort_trader"]
+            hooks: ["increase_reputation", "increase_strength"]
             next: "at_the_trader"
           - choice: Warn him to hurry to safety as fast as he could
             response: I will, I will! I'll tell people how kind you was. But you better to be very careful. This
@@ -95,7 +95,96 @@ game:
       # ----------------------------------------------------------------------------------------------------------------
       - action: "at_the_trader"
         name: "The trader and you arrived to the Trader's mansion."
-        desc: The Trader asks you to spend the dinner and the night with him and his family.  
+        desc: The Trader asks you to spend the dinner and the night with him and his family. After the breakfast you
+          say goodbye to the trader's lovely family.
+        choices:
+          - choice: Go to the woods
+            next: "woods"
+          - choice: Go to the Inn
+            next: "the_inn"
       - action: "the_inn"
         name: "Welcome in the 'Inn to the Tired Wanderer'!"
-        desc: You see a Trader fighting against wolves. The Trader tries to scare the wolves away bit a torch, but
+        desc: You enter the inn, sit down and order a beer. Whilst waiting for the innkeeper to bring your drink, you 
+          overhear other travellers discussion. "...yes, yes, that woods is cursed indeed! The trees are in fact fallen 
+          lads, knights and  heroes. The sorceress turned them into trees, she seeks joy in seeing those poor bastards 
+          suffering from loneliness and stillness for centuries. They say the sorceress appear to them like a golden 
+          robin and she lures them into the deepest and darkest part of the forest. Only soulless bandits are  dwelling 
+          there!
+        choices:
+        - choice: You heard enough. Go to the woods and catch the sorceress!
+          next: "woods"
+
+      #
+      #   Act 4 - The woods:
+      # ----------------------------------------------------------------------------------------------------------------
+      - action: "woods"
+        name: "The enchanted woods"
+        desc: You enter the woods. You are moving slowly, but suddenly a bandit attacks you.
+        choices:
+          - choice: Fight him!
+            next:
+              - "win": "the_robin"
+              - "loss": "the_inn"
+          - choice: Run away to the city
+            next: "the_inn"
+
+      - action: "the_robin"
+        name: "The robin"
+        desc: After the fight, you decide you rest till dawn. You wake up at midnight. You see a bright distant light, 
+          and you hears a kind voice from the source of the light. 'Come to me! I am waiting for you!'
+        choices:
+          - choice: Follow the light and the voice
+            next: "meet_with_the_robin"
+          - choice: Draw sword and prepare to fight
+            next: "chase_the_robin"
+
+      - action: "meet_with_the_robin"
+        desc: When you get closer you see it is a golden robin emitting warm light. It has a kind, beautiful 
+          voice of a woman and asks you what are you searching for.
+        choices:
+          - choice: You tell her you are searching the Lamp of the Spirits.
+            hooks: ["increase_reputation"]
+            next: "the_end"
+          - choice: You tell her to lead you to the sorceress.
+            next: "the_end"
+
+      - action: "chase_the_robin"
+        desc: When you get closer, you see it is a golden robin emitting warm light. When you try to catch the
+          creature it flies away. Each time you get a little closer the bird escapes.
+        choices:
+          - choice: Keep chasing the robin
+            hooks: ["decrease_reputation"]
+            next: "the_end"
+          - choice: Put away your sword and follow the magical bird.
+            next: "the_end"
+
+      #
+      #   Act 4 - The woods:
+      # ----------------------------------------------------------------------------------------------------------------
+      - action: "the_end"
+        desc: Finally, you met the Sorceress and she indeed has the Lamp of the Spirits. She greets you, and starts 
+          speaking.
+        choices:
+          - choice: Fight her!
+            next: "bad_ending"
+          - choice: Offer your services to her
+            when: reputation
+            next: "good_ending"
+
+      - action: "bad_ending"
+        desc: The sorceress teleports to you a wasteland. In the wasteland you meet one of the Spirits. They greet you
+          with deep sadness. 
+          
+          'Oh, poor lad! You lost yourself as you lost in this wasteland. But the power of truth is 
+          there deep inside you. Your trial just begun! You can only leave this wasteland when you find your truth in 
+          your heart. When, and not if. We see your value, we want you to shine!'
+
+      - action: "good_ending"
+        desc: You pledge to protect the sorceress. During the years you fell with love with each other, and you make 
+          an oath to keep protecting the realm as wife and husband. After many years you two visit the village where 
+          they greet you as a true hero and they celebrate your wife as the Protector of the Realm. At midnight, one of
+          the spirits visits you.
+          
+          'You are truly an incredible man! After many years of fighting for the realm and 
+          protecting her you still the honest one who left this village. We bless you and your wife. Not for free, but 
+          to have you to protect the Realm of Light for ages.'
