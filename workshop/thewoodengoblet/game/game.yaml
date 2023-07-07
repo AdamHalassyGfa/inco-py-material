@@ -17,7 +17,7 @@ game:
           - choice: "Inspect the Altair of Protection"
             next: "altair"
           - choice: "Go to the Wild"
-            respose: I can't let you go like that. Take this sword and this shield with you. I know you know how and
+            response: I can't let you go like that. Take this sword and this shield with you. I know you know how and
               when you use a weapon and when to use words. Remember, it is better to convince your opponents than kill
               them.
             items: ["Sword", "Shield"]
@@ -41,7 +41,7 @@ game:
           however.
         choices:
           - choice: "You say 'Hey, everything is all right? You look confused.'"
-            next: "prologue"
+            next: "nightwatcher"
             response: Well, at midnight I saw a sudden bright flash around the altair. I went there but then I saw the 
               light again from the gates. When I arrived there, I saw a golden robin. The next thing I remember is I
               woke up in the Lookout Tower. I thought I just fell asleep and I just had a dream.
@@ -123,8 +123,8 @@ game:
         choices:
           - choice: Fight him!
             next:
-              - "win": "the_robin"
-              - "loss": "the_inn"
+              win: "the_robin"
+              loss: "the_inn"
           - choice: Run away to the city
             next: "the_inn"
 
@@ -139,6 +139,7 @@ game:
             next: "chase_the_robin"
 
       - action: "meet_with_the_robin"
+        name: The Robin
         desc: When you get closer you see it is a golden robin emitting warm light. It has a kind, beautiful 
           voice of a woman and asks you what are you searching for.
         choices:
@@ -149,6 +150,7 @@ game:
             next: "the_end"
 
       - action: "chase_the_robin"
+        name: Chasing the robin
         desc: When you get closer, you see it is a golden robin emitting warm light. When you try to catch the
           creature it flies away. Each time you get a little closer the bird escapes.
         choices:
@@ -162,16 +164,18 @@ game:
       #   Act 4 - The woods:
       # ----------------------------------------------------------------------------------------------------------------
       - action: "the_end"
+        name: The End
         desc: Finally, you met the Sorceress and she indeed has the Lamp of the Spirits. She greets you, and starts 
           speaking.
         choices:
           - choice: Fight her!
             next: "bad_ending"
           - choice: Offer your services to her
-            when: reputation
+            when: ["is_reputation_positive"]
             next: "good_ending"
 
       - action: "bad_ending"
+        name: Good Ending
         desc: The sorceress teleports to you a wasteland. In the wasteland you meet one of the Spirits. They greet you
           with deep sadness. 
           
@@ -180,6 +184,7 @@ game:
           your heart. When, and not if. We see your value, we want you to shine!'
 
       - action: "good_ending"
+        name: Bad ending
         desc: You pledge to protect the sorceress. During the years you fell with love with each other, and you make 
           an oath to keep protecting the realm as wife and husband. After many years you two visit the village where 
           they greet you as a true hero and they celebrate your wife as the Protector of the Realm. At midnight, one of
